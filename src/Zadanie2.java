@@ -16,43 +16,63 @@ public class Zadanie2 extends JFrame {
     private JTextArea textArea;
 
     public Zadanie2() {
-        // Ustawienia głównego okna JFrame
         setTitle("Dynamiczna Zmiana Komponentów");
-        setSize(400, 300);
+        setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Dodajemy panel z komponentami do głównego okna
         JPanel panel = createPanel();
         add(panel);
 
-        // Wyśrodkuj okno na ekranie
         setLocationRelativeTo(null);
     }
 
     private JPanel createPanel() {
         // Ustawienia panelu
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2, 10, 10));
+        panel.setLayout(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Dodajemy komponenty do panelu
-        panel.add(new JLabel("Wprowadź tekst:"));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        panel.add(new JLabel("Wprowadź tekst:"), gbc);
+        gbc.gridx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         textField = new JTextField("Tekst");
-        panel.add(textField);
+        panel.add(textField, gbc);
 
-        panel.add(new JLabel("Wprowadź obszar tekstu:"));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        panel.add(new JLabel("Wprowadź obszar tekstu:"), gbc);
+        gbc.gridx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         textArea = new JTextArea("Obszar tekstu");
-        panel.add(textArea);
+        panel.add(textArea, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.NONE;
         JButton colorButton = new JButton("Zmień kolor");
         JButton sizeButton = new JButton("Zmień rozmiar");
         JButton positionButton = new JButton("Przesuń");
+        JButton resetButton = new JButton("Resetuj");
 
-        panel.add(colorButton);
-        panel.add(sizeButton);
-        panel.add(positionButton);
+        panel.add(colorButton, gbc);
 
-        // Dodanie obsługi zdarzenia dla przycisku zmiany koloru
+        gbc.gridy = 3;
+        panel.add(sizeButton, gbc);
+
+        gbc.gridy = 4;
+        panel.add(positionButton, gbc);
+
+        gbc.gridy = 5;
+        panel.add(resetButton, gbc);
+
+        // Dodanie obsługi dla przycisku zmiany koloru
         colorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,7 +84,7 @@ public class Zadanie2 extends JFrame {
             }
         });
 
-        // Dodanie obsługi zdarzenia dla przycisku zmiany rozmiaru
+        // Dodanie obsługi dla przycisku zmiany rozmiaru
         sizeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,7 +99,7 @@ public class Zadanie2 extends JFrame {
             }
         });
 
-        // Dodanie obsługi zdarzenia dla przycisku zmiany pozycji
+        // Dodanie obsługi dla przycisku zmiany pozycji
         positionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,6 +110,19 @@ public class Zadanie2 extends JFrame {
                 int newAreaX = textArea.getX() - 20;
                 int newAreaY = textArea.getY() - 20;
                 textArea.setLocation(newAreaX, newAreaY);
+            }
+        });
+
+        // Dodanie obsługi przycisku reset
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textField.setForeground(Color.BLACK);
+                textArea.setForeground(Color.BLACK);
+                textField.setFont(new Font("Arial", Font.PLAIN, 12));
+                textArea.setFont(new Font("Arial", Font.PLAIN, 12));
+                textField.setLocation(0, 0);
+                textArea.setLocation(0, 0);
             }
         });
 
