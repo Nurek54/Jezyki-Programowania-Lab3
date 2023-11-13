@@ -8,29 +8,23 @@ public class Zadanie5 extends JFrame {
     private JTextField passwordField;
 
     public Zadanie5() {
-        // Ustawienia głównego okna JFrame
         setTitle("Sprawdzanie Siły Hasła");
         setSize(300, 150);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Dodajemy panel z komponentami do głównego okna
         JPanel panel = createPanel();
         add(panel);
 
-        // Wyśrodkuj okno na ekranie
         setLocationRelativeTo(null);
     }
 
     private JPanel createPanel() {
-        // Ustawienia panelu
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // Pole do wprowadzania hasła
         passwordField = new JPasswordField();
         panel.add(passwordField, BorderLayout.CENTER);
 
-        // Przycisk do sprawdzania siły hasła
         JButton checkButton = new JButton("Sprawdź Siłę Hasła");
         checkButton.addActionListener(new ActionListener() {
             @Override
@@ -72,7 +66,6 @@ public class Zadanie5 extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Uruchomienie aplikacji w wątku obsługi zdarzeń
         SwingUtilities.invokeLater(() -> {
             Zadanie5 passwordStrengthChecker = new Zadanie5();
             passwordStrengthChecker.setVisible(true);
