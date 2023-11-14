@@ -3,6 +3,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/*Treść zadania:
+Stwórz GUI do sprawdzania siły hasła. Udostępnij pole tekstowe do wprowadzania haseł oraz przycisk
+do sprawdzania siły hasła. Zaimplementuj logikę oceny siły hasła (np. długość, rodzaje znaków)
+i wyświetl wynik w oknie dialogowym lub na interfejsie.
+ */
+
 public class Zadanie5 extends JFrame {
 
     private JTextField passwordField;

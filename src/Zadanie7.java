@@ -10,37 +10,37 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/*Treść zadania:
+Opracuj aplikację przeglądania obrazów przy użyciu Swing.
+Pozwól użytkownikom wczytywać plik obrazu i wyświetlać go wewnątrz JFrame.
+Wprowadź przyciski lub pozycje menu do zbliżania, oddalania i dopasowywania obrazu do okna.
+ */
+
 public class Zadanie7 extends JFrame {
 
     private JLabel imageLabel;
     private ImageIcon imageIcon;
 
     public Zadanie7() {
-        // Ustawienia głównego okna JFrame
         setTitle("Przeglądarka Obrazów");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Dodajemy panel z komponentami do głównego okna
         JPanel panel = createPanel();
         add(panel);
 
-        // Wyśrodkuj okno na ekranie
         setLocationRelativeTo(null);
     }
 
     private JPanel createPanel() {
-        // Ustawienia panelu
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        // Etykieta do wyświetlania obrazu
         imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(JLabel.CENTER);
         imageLabel.setVerticalAlignment(JLabel.CENTER);
         panel.add(new JScrollPane(imageLabel), BorderLayout.CENTER);
 
-        // Pasek narzędziowy z przyciskami
         JToolBar toolBar = createToolBar();
         panel.add(toolBar, BorderLayout.NORTH);
 
@@ -50,7 +50,6 @@ public class Zadanie7 extends JFrame {
     private JToolBar createToolBar() {
         JToolBar toolBar = new JToolBar();
 
-        // Przycisk wczytujący obraz
         JButton openButton = new JButton("Wczytaj");
         openButton.addActionListener(new ActionListener() {
             @Override
@@ -60,7 +59,6 @@ public class Zadanie7 extends JFrame {
         });
         toolBar.add(openButton);
 
-        // Przycisk przybliżania
         JButton zoomInButton = new JButton("Powiększ");
         zoomInButton.addActionListener(new ActionListener() {
             @Override
@@ -70,7 +68,6 @@ public class Zadanie7 extends JFrame {
         });
         toolBar.add(zoomInButton);
 
-        // Przycisk oddalania
         JButton zoomOutButton = new JButton("Pomniejsz");
         zoomOutButton.addActionListener(new ActionListener() {
             @Override
@@ -80,7 +77,6 @@ public class Zadanie7 extends JFrame {
         });
         toolBar.add(zoomOutButton);
 
-        // Przycisk dopasowywania obrazu do okna
         JButton fitToScreenButton = new JButton("Dopasuj do ekranu");
         fitToScreenButton.addActionListener(new ActionListener() {
             @Override
@@ -133,7 +129,7 @@ public class Zadanie7 extends JFrame {
 
     private void fitToScreen() {
         if (imageIcon != null) {
-            int width = getWidth() - 20; // Odstęp na marginesy
+            int width = getWidth() - 20;
             int height = getHeight() - 20;
             scaleImage(width, height);
         }
