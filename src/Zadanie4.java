@@ -58,7 +58,15 @@ public class Zadanie4 extends JFrame {
 
     private JButton createButton(String label) {
         JButton button = new JButton(label);
-        button.addActionListener(new ButtonClickListener());
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JButton source = (JButton) e.getSource();
+                String command = source.getText();
+
+                handleButtonAction(command);
+            }
+        });
         button.setFont(new Font("Calibri", Font.PLAIN, 20));
         button.setForeground(Color.WHITE);
         button.setBackground(new Color(51, 51, 51));
@@ -66,33 +74,27 @@ public class Zadanie4 extends JFrame {
         return button;
     }
 
-    private class ButtonClickListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JButton source = (JButton) e.getSource();
-            String command = source.getText();
-
-            switch (command) {
-                case "=":
-                    calculateResult();
-                    break;
-                case "+":
-                case "-":
-                case "*":
-                case "/":
-                    setOperation(command);
-                    break;
-                case ".":
-                    appendToInput(".");
-                    break;
-                case "C": // Zmieniono na "Clear"
-                    clearCalculator();
-                    display.setText("");
-                    break;
-                default:
-                    appendToInput(command);
-                    break;
-            }
+    private void handleButtonAction(String command) {
+        switch (command) {
+            case "=":
+                calculateResult();
+                break;
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+                setOperation(command);
+                break;
+            case ".":
+                appendToInput(".");
+                break;
+            case "C":
+                clearCalculator();
+                display.setText("");
+                break;
+            default:
+                appendToInput(command);
+                break;
         }
     }
 
@@ -145,8 +147,6 @@ public class Zadanie4 extends JFrame {
     }
 
     public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(() ->
-                new Zadanie4());
+        SwingUtilities.invokeLater(() -> new Zadanie4());
     }
 }
