@@ -2,19 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-/*Treść zadania:
-Opracuj aplikację przeglądania obrazów przy użyciu Swing.
-Pozwól użytkownikom wczytywać plik obrazu i wyświetlać go wewnątrz JFrame.
-Wprowadź przyciski lub pozycje menu do zbliżania, oddalania i dopasowywania obrazu do okna.
- */
 
 public class Zadanie7 extends JFrame {
 
@@ -137,7 +129,14 @@ public class Zadanie7 extends JFrame {
 
     private void scaleImage(int width, int height) {
         Image scaledImage = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        imageIcon = new ImageIcon(scaledImage);
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g2d.drawImage(scaledImage, 0, 0, width, height, null);
+        g2d.dispose();
+
+        imageIcon = new ImageIcon(bufferedImage);
         imageLabel.setIcon(imageIcon);
     }
 
