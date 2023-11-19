@@ -8,6 +8,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/*Treść zadania:
+Opracuj aplikację przeglądania obrazów przy użyciu Swing.
+Pozwól użytkownikom wczytywać plik obrazu i wyświetlać go wewnątrz JFrame.
+Wprowadź przyciski lub pozycje menu do zbliżania, oddalania i dopasowywania obrazu do okna.
+ */
+
 public class Zadanie7 extends JFrame {
 
     private JLabel imageLabel;
