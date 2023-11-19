@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 /*Treść zadania:
 Stwórz GUI do sprawdzania siły hasła. Udostępnij pole tekstowe do wprowadzania haseł oraz przycisk
@@ -11,44 +12,42 @@ i wyświetl wynik w oknie dialogowym lub na interfejsie.
 
 public class Zadanie5 extends JFrame {
 
-    private JTextField passwordField;
+    private JPasswordField passwordField;
+    private JButton checkStrengthButton;
 
     public Zadanie5() {
-        setTitle("Sprawdzanie Siły Hasła");
-        setSize(300, 150);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel panel = createPanel();
-        add(panel);
-
-        setLocationRelativeTo(null);
+        initializeUI();
     }
 
-    private JPanel createPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
+    private void initializeUI() {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Sprawdzanie Siły Hasła");
+        setLayout(new BorderLayout());
 
         passwordField = new JPasswordField();
-        panel.add(passwordField, BorderLayout.CENTER);
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 16));
+        add(passwordField, BorderLayout.NORTH);
 
-        JButton checkButton = new JButton("Sprawdź Siłę Hasła");
-        checkButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkPasswordStrength();
-            }
-        });
-        panel.add(checkButton, BorderLayout.SOUTH);
+        checkStrengthButton = new JButton("Sprawdź Siłę Hasła");
+        checkStrengthButton.addActionListener(new ButtonClickListener());
+        checkStrengthButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        add(checkStrengthButton, BorderLayout.CENTER);
 
-        return panel;
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
-    private void checkPasswordStrength() {
-        String password = passwordField.getText();
-        String strengthCategory = assessPasswordStrength(password);
-        String resultMessage = "Siła Hasła: " + strengthCategory;
-
-        JOptionPane.showMessageDialog(this, resultMessage, "Ocena Siły Hasła", JOptionPane.INFORMATION_MESSAGE);
+    private class ButtonClickListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            char[] passwordChars = passwordField.getPassword();
+            String password = new String(passwordChars);
+            String strengthCategory = assessPasswordStrength(password);
+            displayStrengthMessage(strengthCategory);
+            Arrays.fill(passwordChars, ' ');
+            passwordField.setText("");
+        }
     }
 
     private String assessPasswordStrength(String password) {
@@ -71,10 +70,13 @@ public class Zadanie5 extends JFrame {
         }
     }
 
+    private void displayStrengthMessage(String strengthCategory) {
+        String message = "Siła Hasła: " + strengthCategory;
+
+        JOptionPane.showMessageDialog(this, message, "Ocena Siły Hasła", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Zadanie5 passwordStrengthChecker = new Zadanie5();
-            passwordStrengthChecker.setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new Zadanie5());
     }
 }
