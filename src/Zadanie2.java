@@ -38,10 +38,10 @@ public class Zadanie2 extends JFrame {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-        zmienKolorButton.addActionListener(e -> zmienKolor(witajLabel));
-        zmienRozmiarButton.addActionListener(e -> zmienRozmiar(witajLabel));
-        przesunButton.addActionListener(e -> przesunKomponent(witajLabel));
-        resetButton.addActionListener(e -> resetKomponent(witajLabel));
+        zmienKolorButton.addActionListener(new Zadanie2.ZmienKolorListener(witajLabel));
+        zmienRozmiarButton.addActionListener(new Zadanie2.ZmienRozmiarListener(witajLabel));
+        przesunButton.addActionListener(new Zadanie2.PrzesunListener(witajLabel, this));
+        resetButton.addActionListener(new Zadanie2.ResetListener(witajLabel));
 
         // Ustaw okno na pełny ekran
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -52,46 +52,85 @@ public class Zadanie2 extends JFrame {
         aktualnaPozycja = witajLabel.getLocation();
     }
 
-    private void zmienKolor(Component komponent) {
-        Color wybranyKolor = JColorChooser.showDialog(this, "Wybierz kolor", komponent.getForeground());
-        if (wybranyKolor != null) {
-            komponent.setForeground(wybranyKolor);
+    private static class ZmienKolorListener implements ActionListener {
+        private final Component komponent;
+
+        public ZmienKolorListener(Component komponent) {
+            this.komponent = komponent;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Color wybranyKolor = JColorChooser.showDialog(null, "Wybierz kolor", komponent.getForeground());
+            if (wybranyKolor != null) {
+                komponent.setForeground(wybranyKolor);
+            }
         }
     }
 
-    private void zmienRozmiar(Component komponent) {
-        String nowyRozmiarStr = JOptionPane.showInputDialog(this, "Podaj nowy rozmiar (liczba):");
-        if (nowyRozmiarStr != null && !nowyRozmiarStr.isEmpty()) {
-            int nowyRozmiar = Integer.parseInt(nowyRozmiarStr);
-            Font aktualnaCzcionka = komponent.getFont();
-            komponent.setFont(new Font(aktualnaCzcionka.getName(), aktualnaCzcionka.getStyle(), nowyRozmiar));
-            // Ręczne przesunięcie etykiety na aktualne współrzędne
-            komponent.setLocation(aktualnaPozycja);
+    private static class ZmienRozmiarListener implements ActionListener {
+        private final Component komponent;
+
+        public ZmienRozmiarListener(Component komponent) {
+            this.komponent = komponent;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String nowyRozmiarStr = JOptionPane.showInputDialog(null, "Podaj nowy rozmiar (liczba):");
+            if (nowyRozmiarStr != null && !nowyRozmiarStr.isEmpty()) {
+                int nowyRozmiar = Integer.parseInt(nowyRozmiarStr);
+                Font aktualnaCzcionka = komponent.getFont();
+                komponent.setFont(new Font(aktualnaCzcionka.getName(), aktualnaCzcionka.getStyle(), nowyRozmiar));
+                // Ręczne przesunięcie etykiety na aktualne współrzędne
+                komponent.setLocation(((Zadanie2) SwingUtilities.getWindowAncestor(komponent)).aktualnaPozycja);
+            }
         }
     }
 
-    private void przesunKomponent(Component komponent) {
-        String noweXStr = JOptionPane.showInputDialog(this, "Podaj nową pozycję X (liczba):");
-        String noweYStr = JOptionPane.showInputDialog(this, "Podaj nową pozycję Y (liczba):");
+    private static class PrzesunListener implements ActionListener {
+        private final Component komponent;
+        private final JFrame frame;
 
-        if (noweXStr != null && !noweXStr.isEmpty() && noweYStr != null && !noweYStr.isEmpty()) {
-            int noweX = Integer.parseInt(noweXStr);
-            int noweY = Integer.parseInt(noweYStr);
-            komponent.setLocation(noweX, noweY);
-            // Aktualizacja aktualnej pozycji
-            aktualnaPozycja = new Point(noweX, noweY);
+        public PrzesunListener(Component komponent, JFrame frame) {
+            this.komponent = komponent;
+            this.frame = frame;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String noweXStr = JOptionPane.showInputDialog(null, "Podaj nową pozycję X (liczba):");
+            String noweYStr = JOptionPane.showInputDialog(null, "Podaj nową pozycję Y (liczba):");
+
+            if (noweXStr != null && !noweXStr.isEmpty() && noweYStr != null && !noweYStr.isEmpty()) {
+                int noweX = Integer.parseInt(noweXStr);
+                int noweY = Integer.parseInt(noweYStr);
+                komponent.setLocation(noweX, noweY);
+                // Aktualizacja aktualnej pozycji
+                ((Zadanie2) frame).aktualnaPozycja = new Point(noweX, noweY);
+            }
         }
     }
 
-    private void resetKomponent(Component komponent) {
-        witajLabel.setText("PIWO");
-        komponent.setForeground(Color.BLACK);
-        komponent.setFont(new Font(komponent.getFont().getName(), Font.PLAIN, 12));
-        // Przywróć etykietę do ostatniej znanej pozycji
-        komponent.setLocation(aktualnaPozycja);
+    private static class ResetListener implements ActionListener {
+        private final JLabel label;
+
+        public ResetListener(JLabel label) {
+            this.label = label;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            label.setText("PIWO");
+            label.setForeground(Color.BLACK);
+            label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 12));
+            // Przywróć etykietę do ostatniej znanej pozycji
+            ((Zadanie2) SwingUtilities.getWindowAncestor(label)).aktualnaPozycja = label.getLocation();
+        }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Zadanie2().setVisible(true));
+        SwingUtilities.invokeLater(() ->
+                new Zadanie2().setVisible(true));
     }
 }

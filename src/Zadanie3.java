@@ -1,7 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /*Treść zadania:
 Stwórz okno dialogowe, które prosi użytkownika o podanie swojego imienia.
@@ -10,84 +7,49 @@ lub niestandardowego okna dialogowego (JDialog). Upewnij się, że okno dialogow
 a wprowadzone imię może być wyświetlane w głównym oknie.
  */
 
-public class Zadanie3 extends JFrame {
+public class Zadanie3 {
 
-    private JLabel welcomeLabel;
+    private JFrame frame;
 
     public Zadanie3() {
-        setTitle("Okno Dialogowe z Imieniem");
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel panel = createPanel();
-        add(panel);
-
-        setLocationRelativeTo(null);
+        frame = new JFrame("Witaj!");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private JPanel createPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    private void createAndShowGUI() {
+        String userName = askForName();
 
-        JButton showDialogButton = new JButton("Pokaż Okno Dialogowe");
-        panel.add(showDialogButton, BorderLayout.NORTH);
+        JLabel welcomeLabel = new JLabel("Witaj, " + userName + " !!!");
+        welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
+        frame.getContentPane().add(welcomeLabel);
 
-        welcomeLabel = new JLabel("Witaj, ");
-        panel.add(welcomeLabel, BorderLayout.CENTER);
-
-        showDialogButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showNameInputDialog();
-            }
-        });
-
-        return panel;
+        frame.setSize(300, 200);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
-    private void showNameInputDialog() {
-        JDialog nameDialog = new JDialog(this, "Podaj Imię", true);
-        nameDialog.setSize(300, 150);
-        nameDialog.setLayout(new BorderLayout());
-        nameDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    private String askForName() {
+        JTextField nameField = new JTextField();
+        Object[] message = {"Podaj swoje imię:", nameField};
 
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new FlowLayout());
+        int option = JOptionPane.showOptionDialog(null, message, "Podaj swoje imię", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 
-        JLabel nameLabel = new JLabel("Imię:");
-        JTextField nameField = new JTextField(20);
-        JButton okButton = new JButton("OK");
+        if (option == JOptionPane.OK_OPTION) {
+            return nameField.getText();
+        } else {
+            System.exit(0);
+            return null;
+        }
+    }
 
-        inputPanel.add(nameLabel);
-        inputPanel.add(nameField);
-        inputPanel.add(okButton);
-
-        nameDialog.add(inputPanel, BorderLayout.CENTER);
-
-        // Dodanie obsługi dla przycisku OK
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String enteredName = nameField.getText();
-                if (!enteredName.isEmpty()) {
-                    welcomeLabel.setText("Witaj, " + enteredName + "!");
-                } else {
-                    JOptionPane.showMessageDialog(Zadanie3.this, "Proszę podać imię.", "Błąd", JOptionPane.ERROR_MESSAGE);
-                }
-                nameDialog.dispose(); // Zamknięcie okna dialogowego po wprowadzeniu imienia
-            }
+    public void runApplication() {
+        SwingUtilities.invokeLater(() -> {
+            createAndShowGUI();
         });
-
-        nameDialog.setLocationRelativeTo(this);
-
-        nameDialog.setVisible(true);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Zadanie3 app = new Zadanie3();
-            app.setVisible(true);
-        });
+        Zadanie3 app = new Zadanie3();
+        app.runApplication();
     }
 }
