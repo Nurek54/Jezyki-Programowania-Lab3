@@ -53,9 +53,10 @@ public class Zadanie1 extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String text = textField.getText();
                 char[] password = passwordField.getPassword();
+                //String password = passwordField.getPassword();
 
                 textArea.append("Tekst: " + text + "\n");
-                textArea.append("Hasło: " + new String(password) + "\n");
+                textArea.append("Hasło: " + password + "\n");
 
                 textField.setText("");
                 passwordField.setText("");
@@ -65,8 +66,8 @@ public class Zadanie1 extends JFrame {
         return panel;
     }
 
+
     public static void main(String[] args) {
-        // Uruchomienie aplikacji w wątku obsługi zdarzeń
         SwingUtilities.invokeLater(() -> {
             Zadanie1 app = new Zadanie1();
             app.setVisible(true);
