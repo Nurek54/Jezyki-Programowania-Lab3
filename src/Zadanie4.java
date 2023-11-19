@@ -40,7 +40,8 @@ public class Zadanie4 extends JFrame {
                 "7", "8", "9", "/",
                 "4", "5", "6", "*",
                 "1", "2", "3", "-",
-                "0", ".", "=", "+"
+                "0", ".", "=", "+",
+                "C"
         };
 
         for (String label : buttonLabels) {
@@ -59,8 +60,9 @@ public class Zadanie4 extends JFrame {
         JButton button = new JButton(label);
         button.addActionListener(new ButtonClickListener());
         button.setFont(new Font("Calibri", Font.PLAIN, 20));
-        button.setForeground(Color.WHITE); // Zmiana koloru tekstu na biały
-        button.setBackground(new Color(51, 51, 51)); // Ustawienie koloru tła przycisków na ciemnoszary
+        button.setForeground(Color.WHITE);
+        button.setBackground(new Color(51, 51, 51));
+
         return button;
     }
 
@@ -82,6 +84,10 @@ public class Zadanie4 extends JFrame {
                     break;
                 case ".":
                     appendToInput(".");
+                    break;
+                case "C": // Zmieniono na "Clear"
+                    clearCalculator();
+                    display.setText("");
                     break;
                 default:
                     appendToInput(command);
@@ -139,6 +145,8 @@ public class Zadanie4 extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Zadanie4());
+
+        SwingUtilities.invokeLater(() ->
+                new Zadanie4());
     }
 }
