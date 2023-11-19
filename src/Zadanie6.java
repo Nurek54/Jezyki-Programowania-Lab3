@@ -2,7 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /*Treść zadania:
 Utwórz aplikację GUI do zarządzania listą kontaktów, w której użytkownicy mogą dodawać,
@@ -25,10 +26,30 @@ public class Zadanie6 extends JFrame {
         contactListModel = new DefaultListModel<>();
         contactList = new JList<>(contactListModel);
 
+        // Dodaj MouseListener do JList, aby obsłużyć kliknięcie na kontakt
+        contactList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    int selectedIndex = contactList.getSelectedIndex();
+                    if (selectedIndex != -1) {
+                        Contact selectedContact = contactListModel.getElementAt(selectedIndex);
+                        displayContact(selectedContact);
+                    }
+                }
+            }
+        });
+
         JPanel panel = createPanel();
         add(panel);
 
         setLocationRelativeTo(null);
+    }
+
+    private void displayContact(Contact contact) {
+        nameField.setText(contact.getName());
+        phoneField.setText(contact.getPhone());
+        emailField.setText(contact.getEmail());
     }
 
     private JPanel createPanel() {
@@ -180,31 +201,38 @@ public class Zadanie6 extends JFrame {
         }
 
         public String getName() {
+
             return name;
         }
 
         public void setName(String name) {
+
             this.name = name;
         }
 
         public String getPhone() {
+
             return phone;
         }
 
         public void setPhone(String phone) {
+
             this.phone = phone;
         }
 
         public String getEmail() {
+
             return email;
         }
 
         public void setEmail(String email) {
+
             this.email = email;
         }
 
         @Override
         public String toString() {
+
             return name;
         }
     }
